@@ -1,7 +1,7 @@
 import os,glob,re
 import numpy as np
 import pandas as pd
-from pyFAST.input_output import FASTInputFile as fstin
+from openfast_toolbox.io import FASTInputFile as fstin
 
 def modify_input_file(base_file,out_file,inp_dict):
     """
