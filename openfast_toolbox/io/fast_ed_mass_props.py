@@ -8,7 +8,7 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pyFAST.input_output.fast_input_file import FASTInputFile as fstin
+from openfast_toolbox.io.fast_input_file import FASTInputFile as fstin
 
 def find_mass_props(fst_file,ref2rt = np.zeros([0,0,0]), azimuth = 0.):
     """

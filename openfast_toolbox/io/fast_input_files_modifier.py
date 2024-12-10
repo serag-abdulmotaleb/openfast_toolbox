@@ -109,7 +109,8 @@ def modify_fst_deck(fst_dir,fst_file,out_dir='.',suffix='',env_suffix='',wave_su
     if hydro_dict:
         hd = fstin(hydro_base)
         hydro_out = fst_root + '_HydroDyn' + suffix + env_suffix + wave_suffix + '.dat'
-        hydro_dict['PotFile'] = '"{}"'.format(os.path.join(os.path.relpath(hydro_dir,out_dir),hd['PotFile'].replace('"','')))
+        if 'PotFile' not in hydro_dict.keys():
+            hydro_dict['PotFile'] = '"{}"'.format(os.path.join(os.path.relpath(hydro_dir,out_dir),hd['PotFile'].replace('"','')))
         modify_input_file(hydro_base,os.path.join(out_dir,hydro_out),hydro_dict)
         fst_dict['HydroFile'] = '"{}"'.format(hydro_out)
     else:
@@ -118,10 +119,13 @@ def modify_fst_deck(fst_dir,fst_file,out_dir='.',suffix='',env_suffix='',wave_su
     if elasto_dict:
         ed = fstin(elasto_base)
         elasto_out = fst_root + '_ElastoDyn' + suffix + dof_suffix + '.dat'
-        elasto_dict['BldFile1'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile1'].replace('"','')))
-        elasto_dict['BldFile2'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile2'].replace('"','')))
-        elasto_dict['BldFile3'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile3'].replace('"','')))
-        elasto_dict['TwrFile'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['TwrFile'].replace('"','')))
+        if not bool(set(elasto_dict.keys()) & {f'BldFile{i}' for i in range(1,4)}):
+            elasto_dict['BldFile1'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile1'].replace('"','')))
+            elasto_dict['BldFile2'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile2'].replace('"','')))
+            elasto_dict['BldFile3'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['BldFile3'].replace('"','')))
+        if 'TwrFile' not in elasto_dict.keys():
+            elasto_dict['TwrFile'] = '"{}"'.format(os.path.join(os.path.relpath(elasto_dir,out_dir),ed['TwrFile'].replace('"','')))
+
         modify_input_file(elasto_base,os.path.join(out_dir,elasto_out),elasto_dict)
         fst_dict['EDFile'] = '"{}"'.format(elasto_out)
     else:

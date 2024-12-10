@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pyFAST.input_output import FASTOutputFile as fstout
+from openfast_toolbox.io import FASTOutputFile as fstout
 
-def read_step_wind(out_file,keys,T_sim,T_trans,steps,prefix=''):
+def read_step_wind(out_file,keys,T_sim,T_trans,steps,prefix=None):
     df = fstout(out_file).toDataFrame()
     t = df['Time_[s]'].to_numpy()
     dt = t[1] - t[0]
@@ -20,5 +20,7 @@ def read_step_wind(out_file,keys,T_sim,T_trans,steps,prefix=''):
             stdy_dict[key].append(df[key].to_numpy()[n1:n2][-1])
     stdy_df = pd.DataFrame(stdy_dict)
 
-    stdy_df.to_csv(prefix + 'steady_state_results.csv')
+    if prefix is not None:
+        stdy_df.to_csv(prefix + 'steady_state_results.csv')
+        
     return stdy_df
